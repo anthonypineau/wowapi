@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="./src/style.scss">
     <title>WoW - API</title>
 </head>
 <body>
     <header>
         <nav>
-            <li>Home</li>
-            <li>Classes</li>
-            <li>Races</li>
-            <li>Jobs</li>
+            <ul>
+                <li><a class="active" href="#home">Home</a></li>
+                <li><a href="#news">Classes</a></li>
+                <li><a href="#contact">Races</a></li>
+                <li><a href="#about">Jobs</a></li>
+            </ul>
         </nav>
     </header>
-    <section>
+    <section class="display">
         Welcome to the WoW API
-    </section class="display">
+    </section>
 
     <footer>
 
     </footer>
-    <script src="main.js"></script>
+    <script src="./src/main.js"></script>
 </body>
 </html>
