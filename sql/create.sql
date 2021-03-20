@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS `Classes`;
 DROP TABLE IF EXISTS `Races`;
 DROP TABLE IF EXISTS `Professions`;
 DROP TABLE IF EXISTS `Titles`;
+DROP TABLE IF EXISTS `Mounts`;
 
 create table Item_classes
 (id int not null auto_increment,
@@ -25,9 +26,11 @@ ENGINE=INNODB;
 create table Items
 (id int not null auto_increment, 
 name varchar(45) not null,
+quality varchar(45) not null,
 level int not null,
 required_level int not null,
 purchase_price int not null,
+sell_price int not null,
 is_equippable bit(1) not null,
 is_stackable bit(1) not null,
 media varchar(250),
@@ -46,20 +49,19 @@ name varchar(45) not null,
 description text not null,
 is_capturable bit(1) not null,
 is_tradable bit(1) not null,
-is_battlepet bit(1) not null,
 is_alliance_only bit(1) not null,
 is_horde_only bit(1) not null,
 is_tameable bit(1) not null,
-display varchar(250) not null,
+source varchar(45) not null,
 icon varchar(250) not null,
+display varchar(250) not null,
 constraint pk_Pets primary key(id))
 ENGINE=INNODB;
 
 create table Classes
 (id int not null auto_increment,
 name varchar(45) not null,
-female_name varchar(45) not null,
-male_name varchar(45) not null,
+power_type varchar(45) not null,
 media varchar(250) not null,
 constraint pk_Classes primary key(id))
 ENGINE=INNODB;
@@ -67,8 +69,7 @@ ENGINE=INNODB;
 create table Races
 (id int not null auto_increment,
 name varchar(45) not null,
-female_name varchar(45) not null,
-male_name varchar(45) not null,
+faction varchar(45) not null,
 constraint pk_Races primary key(id))
 ENGINE=INNODB;
 
@@ -76,6 +77,7 @@ create table Professions
 (id int not null auto_increment,
 name varchar(45) not null,
 description text not null,
+type varchar(45) not null,
 media varchar(250) not null,
 constraint pk_Professions primary key(id))
 ENGINE=INNODB;
@@ -83,7 +85,16 @@ ENGINE=INNODB;
 create table Titles
 (id int not null auto_increment,
 name varchar(45) not null,
-female_name varchar(45) not null,
-male_name varchar(45) not null,
+example_name varchar(45) not null,
 constraint pk_Titles primary key(id))
+ENGINE=INNODB;
+
+create table Mounts
+(id int not null auto_increment,
+name varchar(45) not null,
+description text not null,
+source varchar(45) not null,
+faction varchar(45) not null,
+media varchar(250) not null,
+constraint pk_Mounts primary key(id))
 ENGINE=INNODB;
