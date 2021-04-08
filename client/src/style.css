@@ -35,7 +35,7 @@ li a:hover:not(.active) {
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   justify-content: center;
   padding: 10px;
 }
@@ -96,4 +96,31 @@ footer p{
   width: 120px;
   margin: 0 auto;
   padding-bottom: 10px;
+}
+
+@media (max-width: 680px) { 
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1280px) { 
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1500px) { 
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: center;
+    padding: 10px;
+  }
 }

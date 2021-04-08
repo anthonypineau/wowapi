@@ -1,26 +1,15 @@
 DROP TABLE IF EXISTS `Items`;
-DROP TABLE IF EXISTS `Item_subclasses`;
-DROP TABLE IF EXISTS `Item_classes`;
-DROP TABLE IF EXISTS `Pets`;
+DROP TABLE IF EXISTS `ItemClasses`;
+DROP TABLE IF EXISTS `Mounts`;
+DROP TABLE IF EXISTS `Players`;
 DROP TABLE IF EXISTS `Classes`;
 DROP TABLE IF EXISTS `Races`;
 DROP TABLE IF EXISTS `Professions`;
-DROP TABLE IF EXISTS `Titles`;
-DROP TABLE IF EXISTS `Mounts`;
 
-create table Item_classes
+create table ItemClasses
 (id int not null auto_increment,
 name varchar(45) not null,
-constraint pk_Item_classes primary key(id))
-ENGINE=INNODB;
-
-create table Item_subclasses
-(id int not null auto_increment,
-name varchar(45) not null,
-item_class int not null,
-constraint pk_Item_subclasses primary key(id),
-constraint fk_Item_subclasses foreign key(item_class) references Item_classes(id) 
-ON DELETE CASCADE ON UPDATE CASCADE)
+constraint pk_ItemClasses primary key(id))
 ENGINE=INNODB;
 
 create table Items
@@ -28,40 +17,22 @@ create table Items
 name varchar(45) not null,
 quality varchar(45) not null,
 level int not null,
-required_level int not null,
-purchase_price int not null,
-sell_price int not null,
-is_equippable bit(1) not null,
-is_stackable bit(1) not null,
+requiredLevel int not null,
+purchasePrice int not null,
+sellPrice int not null,
+isEquippable bit(1) not null,
+isStackable bit(1) not null,
 media varchar(250),
-item_class int not null,
-item_subclass int not null,
+itemClass int not null,
 constraint pk_Items primary key(id),
-constraint fk1_Items foreign key(item_class) references Item_classes(id) 
-ON DELETE CASCADE ON UPDATE CASCADE,
-constraint fk2_Items foreign key(item_subclass) references Item_subclasses(id) 
+constraint fk1_Items foreign key(itemClass) references ItemClasses(id) 
 ON DELETE CASCADE ON UPDATE CASCADE)
-ENGINE=INNODB;
-
-create table Pets
-(id int not null auto_increment,
-name varchar(45) not null,
-description text not null,
-is_capturable bit(1) not null,
-is_tradable bit(1) not null,
-is_alliance_only bit(1) not null,
-is_horde_only bit(1) not null,
-is_tameable bit(1) not null,
-source varchar(45) not null,
-icon varchar(250) not null,
-display varchar(250) not null,
-constraint pk_Pets primary key(id))
 ENGINE=INNODB;
 
 create table Classes
 (id int not null auto_increment,
 name varchar(45) not null,
-power_type varchar(45) not null,
+powerType varchar(45) not null,
 media varchar(250) not null,
 constraint pk_Classes primary key(id))
 ENGINE=INNODB;
@@ -82,11 +53,13 @@ media varchar(250) not null,
 constraint pk_Professions primary key(id))
 ENGINE=INNODB;
 
-create table Titles
+create table Players
 (id int not null auto_increment,
-name varchar(45) not null,
-example_name varchar(45) not null,
-constraint pk_Titles primary key(id))
+username varchar(45) not null,
+isConnected bit(1) not null,
+level int not null,
+icon varchar(250) not null,
+constraint pk_Players primary key(id))
 ENGINE=INNODB;
 
 create table Mounts
@@ -97,4 +70,15 @@ source varchar(45) not null,
 faction varchar(45) not null,
 media varchar(250) not null,
 constraint pk_Mounts primary key(id))
+ENGINE=INNODB;
+
+create table PlayersItems
+(item int not null,
+player int not null,
+numberInInventory int not null,
+constraint pk_PlayersItems primary key(item,player),
+constraint fk1_PlayersItems foreign key(item) references Items(id) 
+ON DELETE CASCADE ON UPDATE CASCADE,
+constraint fk2_PlayersItems foreign key(player) references Players(id) 
+ON DELETE CASCADE ON UPDATE CASCADE)
 ENGINE=INNODB;
