@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
 *{
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 ul {
@@ -9,6 +12,7 @@ ul {
   padding: 0;
   overflow: hidden;
   background-color: #f1f1f1;
+  font-size: 20px;
 }
 
 li {
@@ -73,11 +77,20 @@ li a:hover:not(.active) {
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .flip-card-front {
   background-color: #bbb;
   color: black;
+}
+
+.flip-card-front img {
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .flip-card-back {

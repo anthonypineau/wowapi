@@ -16,6 +16,7 @@ const players = require('./api/players');
 const playersItems = require('./api/playersItems');
 const professions = require('./api/professions');
 const races = require('./api/races');
+const { func } = require('joi');
 
 app.use(volleyball);
 
@@ -38,7 +39,14 @@ function authHandler(req, res, next){
     }
 }
 
+function corsPolicy(req,res,next){
+    res.set({"Access-Control-Allow-Origin" : "*", 
+        "Access-Control-Allow-Credentials" : true });
+        next();
+}
+
 app.use(authHandler);
+app.use(corsPolicy);
 
 app.use('/classes', classes);
 app.use('/itemClasses', itemClasses);

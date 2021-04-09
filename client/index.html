@@ -11,85 +11,93 @@
     <header>
         <nav>
             <ul>
-                <li><a class="active" href="#home">Home</a></li>
-                <li><a href="#news">Classes</a></li>
-                <li><a href="#contact">Races</a></li>
-                <li><a href="#about">Jobs</a></li>
+                <li><a class="active" onClick="window.location.reload(true)">Home</a></li>  <!-- onclick="onClickHome()"" -->
+                <li><a onclick="onClickLink('classes', true)">Classes</a></li>
+                <li><a onclick="onClickLink('itemClasses', false)">Item classes</a></li>
+                <li><a onclick="onClickLink('items', true)">Items</a></li>
+                <li><a onclick="onClickLink('mounts', true)">Mounts</a></li>
+                <li><a onclick="onClickLink('professions', true)">Professions</a></li>
+                <li><a onclick="onClickLink('races', false)">Races</a></li>
+                <li><a onclick="onClickAbout()">About</a></li>
             </ul>
         </nav>
     </header>
-        <div class="grid-container">
-            <div class="grid-item">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-                        </div>
-                        <div class="flip-card-back">
-                            <h1>John Doe</h1>
-                            <p>Architect & Engineer</p> 
-                            <p>We love that guy</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-                        </div>
-                        <div class="flip-card-back">
-                            <h1>John Doe</h1>
-                            <p>Architect & Engineer</p> 
-                            <p>We love that guy</p>
+    <div id="app">
+        <div>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                            </div>
+                            <div class="flip-card-back">
+                                <h1>John Doe</h1>
+                                <p>Architect & Engineer</p> 
+                                <p>We love that guy</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="grid-item">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-                        </div>
-                        <div class="flip-card-back">
-                            <h1>John Doe</h1>
-                            <p>Architect & Engineer</p> 
-                            <p>We love that guy</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-item">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
-                        </div>
-                        <div class="flip-card-back">
-                            <h1>John Doe</h1>
-                            <p>Architect & Engineer</p> 
-                            <p>We love that guy</p>
+                <div class="grid-item">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                            </div>
+                            <div class="flip-card-back">
+                                <h1>John Doe</h1>
+                                <p>Architect & Engineer</p> 
+                                <p>We love that guy</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="grid-item">
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                <div class="grid-item">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                            </div>
+                            <div class="flip-card-back">
+                                <h1>John Doe</h1>
+                                <p>Architect & Engineer</p> 
+                                <p>We love that guy</p>
+                            </div>
                         </div>
-                        <div class="flip-card-back">
-                            <h1>John Doe</h1>
-                            <p>Architect & Engineer</p> 
-                            <p>We love that guy</p>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                            </div>
+                            <div class="flip-card-back">
+                                <h1>John Doe</h1>
+                                <p>Architect & Engineer</p> 
+                                <p>We love that guy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;">
+                            </div>
+                            <div class="flip-card-back">
+                                <h1>John Doe</h1>
+                                <p>Architect & Engineer</p> 
+                                <p>We love that guy</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <footer>
         <p>Copyright 2021</p>
     </footer>
