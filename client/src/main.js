@@ -1,14 +1,67 @@
 const API_URL = "http://localhost:3000/";
 const divApp = document.querySelector("#app");
 
+fetch("./src/views/default.html").then(response => response.text()).then(data => divApp.innerHTML = data);
+
 const linksNav = document.querySelectorAll("nav a");
 linksNav.forEach(link => {
-    link.addEventListener("click", () => {
-        const linkActive = document.querySelector(".active");
-        linkActive.classList.remove("active");
-        link.classList.add("active");
-    });
+    if(!link.classList.contains("right"))
+    {
+        link.addEventListener("click", () => {
+            const linkActive = document.querySelector(".active");
+            linkActive.classList.remove("active");
+            link.classList.add("active");
+        });
+    }
 });
+
+window.onload = function() { 
+    if(localStorage.getItem("token")==null){
+        localStorage.setItem("token", "token");
+    }
+    
+    const LINK_API_URL = API_URL + "players";
+    fetch(LINK_API_URL)
+    .then(response => response.json())
+    .then(data => {
+        const divGridContainer = document.createElement("div");
+        divGridContainer.classList.add("grid-container");
+        //console.log(data);
+        data.forEach(element => {
+            const divGridItem = document.createElement("div");
+            divGridItem.classList.add("grid-item");
+            const divFlipCard = document.createElement("div");
+            divFlipCard.classList.add("flip-card");
+            const divFlipCardInner = document.createElement("div");
+            divFlipCardInner.classList.add("flip-card-inner");
+            const divFlipCardFront = document.createElement("div");
+            divFlipCardFront.classList.add("flip-card-front");
+
+                const imgFlipCardFront = document.createElement("img");
+                imgFlipCardFront.src = element.icon;
+
+                divFlipCardFront.appendChild(imgFlipCardFront);
+
+            const divFlipCardBack = document.createElement("div");
+            divFlipCardBack.classList.add("flip-card-back");
+
+            const divFlipCardBackContent = document.createElement("p");
+            divFlipCardBackContent.textContent = element.username;
+            
+            divFlipCardBack.appendChild(divFlipCardBackContent);
+
+            divFlipCardInner.appendChild(divFlipCardFront);
+            divFlipCardInner.appendChild(divFlipCardBack);
+            divFlipCard.appendChild(divFlipCardInner);
+            divGridItem.appendChild(divFlipCard);
+            divGridContainer.appendChild(divGridItem);
+        });
+        const divContent = document.createElement("div");
+        divContent.appendChild(divGridContainer);
+        divApp.removeChild(divApp.children[0]);
+        divApp.appendChild(divContent);
+    });
+}
 
 function onClickHome(){
     const divContent = document.createElement("div");
@@ -63,6 +116,18 @@ function onClickLink(link, hasAnImage){
             divFlipCardInner.appendChild(divFlipCardFront);
             divFlipCardInner.appendChild(divFlipCardBack);
             divFlipCard.appendChild(divFlipCardInner);
+
+            if(localStorage.getItem("token")!="token"){
+                const divFlipCardContainer = document.createElement("div");
+
+                const buttons = document.createElement("p");
+                buttons.textContent = "test";
+    
+                divFlipCardContainer.appendChild(buttons);
+    
+                divFlipCard.appendChild(divFlipCardContainer);
+            }
+            
             divGridItem.appendChild(divFlipCard);
             divGridContainer.appendChild(divGridItem);
         });
@@ -71,6 +136,15 @@ function onClickLink(link, hasAnImage){
         divApp.removeChild(divApp.children[0]);
         divApp.appendChild(divContent);
     });
+}
+
+function onClickAdministration(){
+    if(localStorage.getItem("token") == "exampletoken"){
+        localStorage.setItem("token", "token");
+    }else{
+        localStorage.setItem("token", "exampletoken");
+    }
+    fetch("./src/views/administration.html").then(response => response.text()).then(data => divApp.innerHTML = data);
 }
 
 function onClickAbout(){

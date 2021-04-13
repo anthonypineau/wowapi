@@ -6,6 +6,14 @@
   font-family: 'Roboto', sans-serif;
 }
 
+#app{
+  min-height: calc(100vh - 50px - 30px);
+}
+
+header{
+  height: 50px;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -100,15 +108,12 @@ li a:hover:not(.active) {
 }
 
 footer{
-  position: static;
+  height: 30px;
+  position:static;
+  clear: both;
   width: 100%;
   bottom: 0;
-}
-
-footer p{
-  width: 120px;
-  margin: 0 auto;
-  padding-bottom: 10px;
+  text-align: center;
 }
 
 @media (max-width: 680px) { 
@@ -136,4 +141,48 @@ footer p{
     justify-content: center;
     padding: 10px;
   }
+}
+
+#administration{
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Bordered form */
+form {
+  position:absolute;
+  top:50%;
+  transform: translateY(-50%);
+  border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
 }
