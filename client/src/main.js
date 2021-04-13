@@ -117,18 +117,26 @@ function onClickLink(link, hasAnImage){
             divFlipCardInner.appendChild(divFlipCardBack);
             divFlipCard.appendChild(divFlipCardInner);
 
-            if(localStorage.getItem("token")!="token"){
-                const divFlipCardContainer = document.createElement("div");
-
-                const buttons = document.createElement("p");
-                buttons.textContent = "test";
-    
-                divFlipCardContainer.appendChild(buttons);
-    
-                divFlipCard.appendChild(divFlipCardContainer);
-            }
             
             divGridItem.appendChild(divFlipCard);
+
+            
+            if(localStorage.getItem("token")!="token"){
+                const divGridItemContainer = document.createElement("div");
+
+                const button1 = document.createElement("button");
+                button1.textContent = "Edit";
+    
+                divGridItemContainer.appendChild(button1);
+    
+                const button2 = document.createElement("button");
+                button2.textContent = "Delete";
+    
+                divGridItemContainer.appendChild(button2);
+
+                divGridItem.appendChild(divGridItemContainer);
+            }
+
             divGridContainer.appendChild(divGridItem);
         });
         const divContent = document.createElement("div");
