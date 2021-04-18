@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const volleyball = require('volleyball');
 
 const handler = require('./handler/handler')
@@ -16,7 +17,11 @@ const players = require('./api/players');
 const playersItems = require('./api/playersItems');
 const professions = require('./api/professions');
 const races = require('./api/races');
+const statistics = require('./api/statistics');
 const { func } = require('joi');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(volleyball);
 
@@ -57,6 +62,7 @@ app.use('/playersItems', playersItems);
 app.use('/professions', professions);
 app.use('/races', races);
 app.use('/users', users);
+app.use('/statistics', statistics);
 
 app.use(handler.notFound);
 app.use(handler.errorHandler);

@@ -1,6 +1,11 @@
 const knex = require('./knex');
 
 module.exports = {
+    getPlayerWhoHasMostItemInInventory(){
+        return knex.select('username').count('*', {as:'numberOfItems'})
+            .from('players').innerJoin('playersitems', 'players.id', 'playersitems.player').groupBy('id','username');
+    },
+
     /*  select * from classes */
     getAll(){
         return knex("classes");

@@ -1,0 +1,38 @@
+<form>
+    <label for="name">Name :</label>
+    <input type="text" id="name"><br />
+    <label for="description">Description :</label>
+    <textarea id="description" cols="30" rows="10"></textarea><br />
+    <label for="source">Source :</label>
+    <select id="source">
+        <option value="Achievement">Achievement</option>
+        <option value="Drop">Drop</option>
+        <option value="Profession">Profession</option>
+        <option value="Quest">Quest</option>
+        <option value="Vendor">Vendor</option>
+    </select><br />
+    <label for="faction">Faction :</label>
+    <select id="faction">
+        <option value="Alliance">Alliance</option>
+        <option value="Horde">Horde</option>
+    </select><br />
+    <label for="media">Media :</label>
+    <input type="text" id="media"><br />
+    <label for="player">Player :</label>
+    <select id="player">
+        
+    </select><br />
+    <button>Add</button>
+</form>
+<script>
+    const selectPlayer = document.getElementById("player");
+    fetch("http://localhost:3000/players").then(response => response.json())
+    .then(data => {
+        data.forEach(element => {
+            const option = document.createElement("option");
+            option.setAttribute("value", element.id);
+            option.innerText = element.username;
+            selectPlayer.appendChild(option);
+        });
+    });
+</script>

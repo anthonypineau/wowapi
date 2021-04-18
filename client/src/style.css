@@ -39,7 +39,6 @@ li a.active {
   background-color: #4CAF50;
 }
 
-/* Change the link color to #111 (black) on hover */
 li a:hover:not(.active) {
   background-color: #555;
   color: white;
@@ -51,6 +50,7 @@ li a:hover:not(.active) {
   justify-content: center;
   padding: 10px;
 }
+
 .grid-item {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
@@ -149,15 +149,14 @@ footer{
 }
 
 /* Bordered form */
-form {
+#administration form {
   position:absolute;
   top:50%;
   transform: translateY(-50%);
   border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
-input[type=text], input[type=password] {
+#administration input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -166,8 +165,7 @@ input[type=text], input[type=password] {
   box-sizing: border-box;
 }
 
-/* Set a style for all buttons */
-button {
+#administration button {
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -177,12 +175,32 @@ button {
   width: 100%;
 }
 
-/* Add a hover effect for buttons */
-button:hover {
+#administration button:hover {
   opacity: 0.8;
 }
 
 /* Add padding to containers */
-.container {
+#administration .container {
   padding: 16px;
+}
+
+form{
+  position:absolute;
+  top:50%;
+  transform: translateY(-50%);
+  border: 3px solid #f1f1f1;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 20px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+}
+
+button:hover {
+  opacity: 0.8;
 }
