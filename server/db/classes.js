@@ -9,7 +9,7 @@ module.exports = {
     getOne(id){
         return knex("classes").where('id', id);
     },
-    /*  insert into classes values() */
+    /*  insert into classes values(...) */
     create(classe) {
         return knex("classes").insert(classe, '*');
     },

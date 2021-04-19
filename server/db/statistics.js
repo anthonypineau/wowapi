@@ -1,29 +1,18 @@
 const knex = require('./knex');
 
 module.exports = {
+    /* select username, count(*) as number-OfItems from players inner join play-ersitems on players.id= playersi-tems.player group by players.id, username */
     getPlayerWhoHasMostItemInInventory(){
         return knex.select('username').count('*', {as:'numberOfItems'})
-            .from('players').innerJoin('playersitems', 'players.id', 'playersitems.player').groupBy('id','username');
+            .from('players').innerJoin('playersitems', 'players.id', 'playersitems.player').groupBy('players.id','username');
     },
-
-    /*  select * from classes */
-    getAll(){
-        return knex("classes");
+    /* select name, purchasePrice-sellPrice as difference from items limit 5 */
+    getDifferenceBetweenSellPriceAndPurchasePrice(){
+        return knex.raw("select name, purchasePrice-sellPrice as difference from items limit 5");
     },
-    /*  select * from classes where id=? */
-    getOne(id){
-        return knex("classes").where('id', id);
-    },
-    /*  insert into classes values() */
-    create(classe) {
-        return knex("classes").insert(classe, '*');
-    },
-    /*  update classes set ... where id=? */
-    update(id, classe) {
-        return knex("classes").where('id', id).update(classe, '*');
-    },
-    /*  delete from classes where id=? */
-    delete(id) {
-        return knex("classes").where('id', id).del();
+    /*  */
+    getNumberOfMountsByPlayer(){
+        return knex.select('username').count('*', {as:'numberOfMounts'})
+            .from('players').innerJoin('mounts', 'players.id', 'mounts.player').groupBy('players.id','username').orderBy('numberOfMounts', 'desc');
     }
 }

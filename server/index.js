@@ -46,7 +46,9 @@ function authHandler(req, res, next){
 
 function corsPolicy(req,res,next){
     res.set({"Access-Control-Allow-Origin" : "*", 
-        "Access-Control-Allow-Credentials" : true });
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "*" });
         next();
 }
 

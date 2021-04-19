@@ -4,10 +4,11 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  font-size: 20px;
 }
 
 #app{
-  min-height: calc(100vh - 50px - 30px);
+  min-height: calc(100vh - 50px - 40px);
 }
 
 header{
@@ -54,7 +55,6 @@ li a:hover:not(.active) {
 .grid-item {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
-  font-size: 30px;
   text-align: center;
 }
 
@@ -66,7 +66,7 @@ li a:hover:not(.active) {
 }
 
 .flip-card-inner {
-  position: relative;
+  position: relative;  
   width: 100%;
   height: 100%;
   text-align: center;
@@ -105,6 +105,25 @@ li a:hover:not(.active) {
   background-color: #2980b9;
   color: white;
   transform: rotateY(180deg);
+  font-size: 30px;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  min-width: 100px;
+  padding: 20px 20px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.card h1,p {
+  padding: 8px 8px;
 }
 
 footer{
@@ -113,6 +132,7 @@ footer{
   clear: both;
   width: 100%;
   bottom: 0;
+  padding-bottom: 10px;
   text-align: center;
 }
 
@@ -144,19 +164,23 @@ footer{
 }
 
 #administration{
-  max-width: 500px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+#form{
+  max-width: 300px;
   margin: 0 auto;
 }
 
 /* Bordered form */
-#administration form {
-  position:absolute;
-  top:50%;
-  transform: translateY(-50%);
+form {
   border: 3px solid #f1f1f1;
+  max-height:600px;
+  overflow-y:auto;
 }
 
-#administration input[type=text], input[type=password] {
+form input, select, textarea {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -165,7 +189,7 @@ footer{
   box-sizing: border-box;
 }
 
-#administration button {
+form button {
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -175,20 +199,13 @@ footer{
   width: 100%;
 }
 
-#administration button:hover {
+form button:hover {
   opacity: 0.8;
 }
 
 /* Add padding to containers */
-#administration .container {
+form .container {
   padding: 16px;
-}
-
-form{
-  position:absolute;
-  top:50%;
-  transform: translateY(-50%);
-  border: 3px solid #f1f1f1;
 }
 
 button {
@@ -203,4 +220,15 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+#divButton{
+  width: 100px;
+  margin: 0 auto;
+}
+
+.divH1{
+  min-width: 100px;
+  margin: 0 auto;
+  padding: 20px;
 }
