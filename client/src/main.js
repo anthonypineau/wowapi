@@ -668,18 +668,18 @@ function addButtonAdd(form, divContainer, buttonAdd, link, id=null, objects){
                 break;
             case "itemClasses":
                 object.name = objects[0].value;
-                object.quality = objects[1].value;
-                object.level = objects[2].value;
-                object.requiredLevel = objects[3].value;
-                object.purchasePrice = objects[4].value;
-                object.sellPrice = objects[5].value;
-                object.isEquippable = objects[6].value;
-                object.isStackable = objects[7].value;
-                object.media = objects[8].value;
-                object.itemClass = objects[9].value;
                 break;
             case "items":
                 object.name = objects[0].value;
+                object.quality = objects[1].value;
+                object.level = Number(objects[2].value);
+                object.requiredLevel = Number(objects[3].value);
+                object.purchasePrice = Number(objects[4].value);
+                object.sellPrice = Number(objects[5].value);
+                object.isEquippable = Number(objects[6].value);
+                object.isStackable = Number(objects[7].value);
+                object.media = objects[8].value;
+                object.itemClass = Number(objects[9].value);
                 break;
             case "mounts":
                 object.name = objects[0].value;
@@ -687,16 +687,16 @@ function addButtonAdd(form, divContainer, buttonAdd, link, id=null, objects){
                 object.source = objects[2].value;
                 object.faction = objects[3].value;
                 object.media = objects[4].value;
-                object.player = objects[5].value;
+                object.player =Number( objects[5].value);
                 break;
             case "players":
                 object.username = objects[0].value;
-                object.isConnected = objects[1].value;
-                object.level = objects[2].value;
+                object.isConnected = Number(objects[1].value);
+                object.level = Number(objects[2].value);
                 object.icon = objects[3].value;
-                object.class = objects[4].value;
-                object.race = objects[5].value;
-                object.profession = objects[6].value;
+                object.class = Number(objects[4].value);
+                object.race = Number(objects[5].value);
+                object.profession = Number(objects[6].value);
                 break;
             case "professions":
                 object.name = objects[0].value;

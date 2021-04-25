@@ -41,7 +41,7 @@ module.exports = {
         const hasIsConnected = !isNaN(player.isConnected);
         const hasLevel = !isNaN(player.level);
         const hasIcon = typeof player.icon == 'string' && player.icon.trim() != '';
-        const hasClass = !isNaN(player.classe);
+        const hasClass = !isNaN(player.class);
         const hasRace = !isNaN(player.race);
         const hasProfession = !isNaN(player.profession);
         return hasUsername && hasIsConnected && hasLevel && hasIcon && hasClass && hasRace && hasProfession;
