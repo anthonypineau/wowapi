@@ -8,7 +8,7 @@ const volleyball = require('volleyball');
 const handler = require('./handler/handler')
 const auth = require('./auth/auth')
 
-const users = require('./users');
+const users = require('./api/users');
 const classes = require('./api/classes');
 const itemClasses = require('./api/itemClasses');
 const items = require('./api/items');
@@ -18,6 +18,12 @@ const playersItems = require('./api/playersItems');
 const professions = require('./api/professions');
 const races = require('./api/races');
 const statistics = require('./api/statistics');
+const medias = require('./api/medias');
+const sources = require('./api/sources');
+const factions = require('./api/factions');
+const powerTypes = require('./api/powerTypes');
+const types = require('./api/types');
+const qualities = require('./api/qualities');
 const { func } = require('joi');
 
 app.use(bodyParser.json());
@@ -65,6 +71,12 @@ app.use('/professions', professions);
 app.use('/races', races);
 app.use('/users', users);
 app.use('/statistics', statistics);
+app.use('/medias', medias);
+app.use('/sources', sources);
+app.use('/factions', factions);
+app.use('/powerTypes', powerTypes);
+app.use('/types', types);
+app.use('/qualities', qualities);
 
 app.use(handler.notFound);
 app.use(handler.errorHandler);

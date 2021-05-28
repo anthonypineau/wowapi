@@ -6,6 +6,7 @@ const buttonAdmin = document.getElementById("buttonAdministration");
 fetch("./src/views/default.html").then(response => response.text()).then(data => divApp.innerHTML = data);
 
 /* data */
+/*
 const dataSelectPowerType= [ { "value":"Energy", "text":"Energy" }, {"value":"Fury", "text":"Fury"},
     {"value":"Focus", "text":"Focus"}, {"value":"Mana", "text":"Mana"}, {"value":"Rage", "text":"Rage"},
     {"value":"Runic Power", "text":"Runic Power"} ];
@@ -16,11 +17,15 @@ const dataSelectSource = [ { "value": "Achievement", "text": "Achievement" }, { 
         { "value": "Profession", "text": "Profession" }, { "value": "Quest", "text": "Quest" }, { "value": "Vendor", "text": "Vendor" } ];
 const dataSelectFaction = [ { "value": "Alliance", "text": "Alliance" }, { "value": "Horde", "text": "Horde" } ];
 const dataSelectType = [ { "value":"Primary", "text":"Primary" }, {"value":"Secondary", "text":"Secondary"}];
+*/
+
+const dataSelectTrueFalse = [ { "id":"1", "name":"True" }, {"id":"0", "name":"False"}];
 /* end data */
 
-const linksNav = document.querySelectorAll("nav a");
+//const linksNav = document.querySelectorAll("nav a");
+const linksNav = document.querySelectorAll(".nav a");
 linksNav.forEach(link => {
-    if(!link.classList.contains("right"))
+    if(!link.classList.contains("right") && !link.classList.contains("icon"))
     {
         link.addEventListener("click", () => {
             const linkActive = document.querySelector(".active");
@@ -30,21 +35,41 @@ linksNav.forEach(link => {
     }
 });
 
-window.onload = function() { 
+function responsiveNav() {
+    const nav = document.getElementById("nav");
+    if (nav.className === "nav") {
+        nav.className += " responsive";
+    } else {
+        nav.className = "nav";
+    }
+}
+
+let dataSelectPowerType;
+let dataSelectQuality;
+let dataSelectSource;
+let dataSelectFaction;
+let dataSelectType;
+
+window.onload = async function() { 
     if(localStorage.getItem("token")==null){
         localStorage.setItem("token", "token");
     }
-    onClickLink("players", true);
+    dataSelectPowerType = await fetch("http://localhost:3000/powerTypes").then(response => response.json());
+    dataSelectQuality = await fetch("http://localhost:3000/qualities").then(response => response.json());
+    dataSelectSource = await fetch("http://localhost:3000/sources").then(response => response.json());
+    dataSelectFaction = await fetch("http://localhost:3000/factions").then(response => response.json());
+    dataSelectType = await fetch("http://localhost:3000/types").then(response => response.json());
+    onClickLink('players', 'player', true);
 }
 
-function onClickLink(link, hasAnImage){
+function onClickLink(link, text, hasAnImage){
     const LINK_API_URL = API_URL + link;
     fetch(LINK_API_URL)
     .then(response => response.json())
     .then(data => {
         const divGridContainer = document.createElement("div");
         divGridContainer.classList.add("grid-container");
-        data.forEach(element => {
+        data.forEach(async element => {
             const divGridItem = document.createElement("div");
             divGridItem.classList.add("grid-item");
             const divFlipCard = document.createElement("div");
@@ -53,15 +78,14 @@ function onClickLink(link, hasAnImage){
             divFlipCardInner.classList.add("flip-card-inner");
             const divFlipCardFront = document.createElement("div");
             divFlipCardFront.classList.add("flip-card-front");
-
             if(hasAnImage){
                 const imgFlipCardFront = document.createElement("img");
-                imgFlipCardFront.src = element.media ? element.media : element.icon;
-
+                const media = await fetch("http://localhost:3000/medias/"+element.media).then(response => response.json()).then(data => data[0].link)
+                imgFlipCardFront.src = media;
                 divFlipCardFront.appendChild(imgFlipCardFront);
             }else{
                 const noImgFlipCardFront = document.createElement("p");
-                noImgFlipCardFront.textContent = element.name ? element.name : element.username;
+                noImgFlipCardFront.textContent = element.name;
                 
                 divFlipCardFront.appendChild(noImgFlipCardFront);
             }
@@ -70,7 +94,7 @@ function onClickLink(link, hasAnImage){
             divFlipCardBack.classList.add("flip-card-back");
 
             const divFlipCardBackContent = document.createElement("p");
-            divFlipCardBackContent.textContent = element.name ? element.name : element.username;
+            divFlipCardBackContent.textContent = element.name;
             
             divFlipCardBack.appendChild(divFlipCardBackContent);
 
@@ -85,30 +109,8 @@ function onClickLink(link, hasAnImage){
 
                 const buttonEdit = document.createElement("button");
                 buttonEdit.innerText = "Edit";
-                buttonEdit.addEventListener("click", () => {
-                    switch(link){
-                        case "classes":
-                            onClickAddClass(element.id);
-                            break;
-                        case "itemClasses":
-                            onClickAddItemClass(element.id);
-                            break;
-                        case "items":
-                            onClickAddItem(element.id);
-                            break;
-                        case "mounts":
-                            onClickAddMount(element.id);
-                            break;
-                        case "professions":
-                            onClickAddProfession(element.id);
-                            break;
-                        case "races":
-                            onClickAddRace(element.id);
-                            break;
-                        case "players":
-                            onClickAddPlayer(element.id); 
-                            break;
-                    }
+                buttonEdit.addEventListener("click", ()=>{
+                    window["onClickAddEdit"](link, text, element.id);
                 });
 
                 divGridItemContainer.appendChild(buttonEdit);
@@ -137,30 +139,7 @@ function onClickLink(link, hasAnImage){
             const buttonAdd = document.createElement("button");
             buttonAdd.innerText = "Add";
             buttonAdd.addEventListener("click", ()=>{
-                switch(link){
-                    case "classes":
-                        onClickAddClass();
-                        break;
-                    case "itemClasses":
-                        onClickAddItemClass();
-                        break;
-                    case "items":
-                        onClickAddItem();
-                        break;
-                    case "mounts":
-                        onClickAddMount();
-                        break;
-                    case "professions":
-                        onClickAddProfession();
-                        break;
-                    case "races":
-                        onClickAddRace();
-                        break;
-                    case "players":
-                        onClickAddPlayer(); 
-                        break;
-                }
-                
+                window["onClickAddEdit"](link, text);
             });
             const div = document.createElement("div");
             div.setAttribute("id", "divButton");
@@ -311,10 +290,6 @@ function onClickStatistics(){
     divApp.appendChild(divContent);
 }
 
-function onClickReports(){
-    
-}
-
 function onClickAbout(){
     const divContent = document.createElement("div");
 
@@ -327,11 +302,20 @@ function onClickAbout(){
     divApp.appendChild(divContent);
 }
 
-function onClickAddClass(id=null){
+function onClickAddEdit(link, text, id=null){
     const divContent = document.createElement("div");
     const form = document.createElement("form");
     const divContainer = document.createElement("div");
     divContainer.classList.add("container");
+    
+    const functionName = "onClickAdd"+link;
+
+    window[functionName](form, divContainer, id);
+
+    app(divApp, divContent, form, text);
+}
+
+function onClickAddclasses(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const labelPowerType = document.createElement("label");
@@ -353,14 +337,9 @@ function onClickAddClass(id=null){
     componentLabelSelect(form, divContainer, labelPowerType,selectPowerType, "Power Type", "powerType", dataSelectPowerType);
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     addButtonAdd(form, divContainer, buttonAdd, "classes", id, objects);
-    app(divApp, divContent, form, "class");
 }
 
-function onClickAddItem(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAdditems(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const labelQuality = document.createElement("label");
@@ -410,14 +389,9 @@ function onClickAddItem(id=null){
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     componentLabelSelectFromApi(form, divContainer, labelItemClass, selectItemClass, "Item class", "itemClass", "http://localhost:3000/itemClasses");
     addButtonAdd(form, divContainer, buttonAdd, "items", id, objects);
-    app(divApp, divContent, form, "item");
 }
 
-function onClickAddItemClass(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAdditemclasses(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const buttonAdd = document.createElement("button");
@@ -431,14 +405,9 @@ function onClickAddItemClass(id=null){
 
     componentLabelInput(form, divContainer, labelName, inputName, "Name", "name", "text");
     addButtonAdd(form, divContainer, buttonAdd, "itemClasses", id, objects);
-    app(divApp, divContent, form, "item class");
 }
 
-function onClickAddMount(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAddmounts(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const labelDescription = document.createElement("label");
@@ -481,14 +450,9 @@ function onClickAddMount(id=null){
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     componentLabelSelectFromApi(form, divContainer, labelPlayer, selectPlayer, "Player", "player", "http://localhost:3000/players");
     addButtonAdd(form, divContainer, buttonAdd, "mounts", id, objects);
-    app(divApp, divContent, form, "mount");
 }
 
-function onClickAddPlayer(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAddplayers(form, divContainer, id=null){
     const labelUsername = document.createElement("label");
     const inputUsername = document.createElement("input");
     const labelIsConnected = document.createElement("label");
@@ -508,10 +472,10 @@ function onClickAddPlayer(id=null){
 
     if(id!=null){
         fetch("http://localhost:3000/players/"+id).then(response => response.json()).then(data => {
-            inputUsername.value = data[0].username;
+            inputUsername.value = data[0].name;
             selectIsConnected.value = data[0].isConnected;
             inputLevel.value = data[0].level;
-            inputIcon.value = data[0].icon;
+            inputIcon.value = data[0].media;
             selectClass.value = data[0].class;
             selectRace.value = data[0].race;
             selectProfession.value = data[0].profession;
@@ -526,14 +490,9 @@ function onClickAddPlayer(id=null){
     componentLabelSelectFromApi(form, divContainer, labelRace, selectRace, "Race", "race", "http://localhost:3000/races");
     componentLabelSelectFromApi(form, divContainer, labelProfession, selectProfession, "Profession", "profession", "http://localhost:3000/professions");
     addButtonAdd(form, divContainer, buttonAdd, "players", id, objects);
-    app(divApp, divContent, form, "player");
 }
 
-function onClickAddPlayerItem(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAddplayersitems(form, divContainer, id=null){
     const labelItem = document.createElement("label");
     const selectItem = document.createElement("select");
     const labelPlayer = document.createElement("label");
@@ -545,14 +504,9 @@ function onClickAddPlayerItem(id=null){
     componentLabelSelectFromApi(form, divContainer, labelPlayer, selectPlayer, "Player", "player", "http://localhost:3000/players");
     componentLabelInput(form, divContainer, labelNumberInInventory, inputNumberInInventory, "Number in inventory", "numberInInventory", "number");
     addButtonAdd(form, divContainer, buttonAdd, "playersItems", id, objects);
-    app(divApp, divContent, form, "player item");
 }
 
-function onClickAddProfession(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAddprofessions(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const labelDescription = document.createElement("label");
@@ -590,14 +544,9 @@ function onClickAddProfession(id=null){
     componentLabelSelect(form, divContainer, labelFaction, selectFaction, "Faction", "faction", dataSelectFaction);
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     addButtonAdd(form, divContainer, buttonAdd, "professions", id, objects);
-    app(divApp, divContent, form, "profession");
 }
 
-function onClickAddRace(id=null){
-    const divContent = document.createElement("div");
-    const form = document.createElement("form");
-    const divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+function onClickAddraces(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const labelFaction = document.createElement("label");
@@ -615,7 +564,6 @@ function onClickAddRace(id=null){
     componentLabelInput(form, divContainer, labelName, inputName, "Name", "name", "text");
     componentLabelSelect(form, divContainer, labelFaction, selectFaction, "Faction", "faction", dataSelectFaction);
     addButtonAdd(form, divContainer, buttonAdd, "races", id, objects);
-    app(divApp, divContent, form, "race");
 }
 
 /* form components */
@@ -633,8 +581,8 @@ function componentLabelSelect(form, divContainer, label, select, textLabel, idSe
     select.setAttribute("id", idSelect);
     data.forEach(element => {
         const option = document.createElement("option");
-        option.setAttribute("value", element.value);
-        option.innerText = element.text;
+        option.setAttribute("value", element.id);
+        option.innerText = element.name;
         select.appendChild(option);
     });
     addForm(form, divContainer, label, select);

@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS `Medias`;
 DROP TABLE IF EXISTS `Sources`;
 DROP TABLE IF EXISTS `Factions`;
 DROP TABLE IF EXISTS `PowerTypes`;
+DROP TABLE IF EXISTS `Types`;
+DROP TABLE IF EXISTS `Qualities`;
 
 create table Medias
 (id int not null auto_increment,
@@ -42,6 +44,12 @@ name varchar(20) not null,
 constraint pk_Types primary key(id))
 ENGINE=INNODB;
 
+create table Qualities
+(id int not null auto_increment,
+name varchar(20) not null,
+constraint pk_Qualities primary key(id))
+ENGINE=INNODB;
+
 create table Users
 (id int not null auto_increment,
 username varchar(45) not null,
@@ -58,19 +66,21 @@ ENGINE=INNODB;
 create table Items
 (id int not null auto_increment, 
 name varchar(45) not null,
-quality varchar(45) not null,
+quality int not null,
 level int not null,
 requiredLevel int not null,
 purchasePrice int not null,
 sellPrice int not null,
-isEquippable bit(1) not null,
-isStackable bit(1) not null,
+isEquippable int not null,
+isStackable int not null,
 media int not null,
 itemClass int not null,
 constraint pk_Items primary key(id),
 constraint fk1_Items foreign key(itemClass) references ItemClasses(id) 
 ON DELETE CASCADE ON UPDATE CASCADE,
 constraint fk2_Items foreign key(media) references Medias(id) 
+ON DELETE CASCADE ON UPDATE CASCADE,
+constraint fk3_Items foreign key(quality) references Qualities(id) 
 ON DELETE CASCADE ON UPDATE CASCADE)
 ENGINE=INNODB;
 
@@ -109,7 +119,7 @@ ENGINE=INNODB;
 create table Players
 (id int not null auto_increment,
 name varchar(45) not null,
-isConnected bit(1) not null,
+isConnected int not null,
 level int not null,
 media int not null,
 class int not null,
@@ -169,11 +179,13 @@ INSERT INTO PowerTypes(name) SELECT DISTINCT powerType FROM wowapi.Classes;
 INSERT INTO ItemClasses(name) SELECT name FROM wowapi.ItemClasses;
 INSERT INTO Types(name) SELECT DISTINCT type FROM wowapi.Professions;
 
+INSERT INTO Qualities(name) SELECT DISTINCT quality FROM wowapi.Items;
+
 INSERT INTO Items(name, quality, level, requiredLevel, purchasePrice, 
 sellPrice, isEquippable, isStackable, media, itemClass)
-SELECT  I.name, I.quality, I.level, I.requiredLevel, I.purchasePrice, 
+SELECT  I.name, Q.id, I.level, I.requiredLevel, I.purchasePrice, 
 I.sellPrice, I.isEquippable,I.isStackable, M.id, I.itemClass
-FROM wowapi.Items I INNER JOIN Medias M ON I.media=M.link;
+FROM wowapi.Items I INNER JOIN Medias M ON I.media=M.link INNER JOIN Qualities Q ON I.quality=Q.name;
 
 INSERT INTO Classes(name, powerType, media) SELECT C.name, P.id, M.id
 FROM wowapi.Classes C INNER JOIN PowerTypes P ON C.powerType=P.name

@@ -3,6 +3,30 @@ module.exports = {
         if(!isNaN(req.params.id)) return next();
         next(new Error('Invalid ID'));
     },
+    validMedia(media){
+        const hasLink = typeof media.link == 'string' && media.link.trim() != '';
+        return hasLink;
+    },
+    validSource(source){
+        const hasName = typeof source.name == 'string' && source.name.trim() != '';
+        return hasName;
+    },
+    validFaction(faction){
+        const hasName = typeof faction.name == 'string' && faction.name.trim() != '';
+        return hasName;
+    },
+    validPowerType(powerType){
+        const hasName = typeof powerType.name == 'string' && powerType.name.trim() != '';
+        return hasName;
+    },
+    validType(type){
+        const hasName = typeof type.name == 'string' && type.name.trim() != '';
+        return hasName;
+    },
+    validQuality(quality){
+        const hasName = typeof quality.name == 'string' && quality.name.trim() != '';
+        return hasName;
+    },
     validClass(classe){
         const hasName = typeof classe.name == 'string' && classe.name.trim() != '';
         const hasPowerType = typeof classe.powerType == 'string' && classe.powerType.trim() != '';
@@ -22,7 +46,7 @@ module.exports = {
         const hasSellPrice = !isNaN(item.sellPrice);
         const hasIsEquippable = !isNaN(item.isEquippable);
         const hasIsStackable = !isNaN(item.isStackable);
-        const hasMedia = typeof item.media == 'string' && item.media.trim() != '';
+        const hasMedia = !isNaN(item.media);
         const hasItemClass = !isNaN(item.itemClass);
         return hasName && hasQuality && hasLevel && hasRequiredLevel && hasPurchasePrice 
         && hasSellPrice && hasIsEquippable && hasIsStackable && hasMedia && hasItemClass;
@@ -30,9 +54,9 @@ module.exports = {
     validMount(mount){
         const hasName = typeof mount.name == 'string' && mount.name.trim() != '';
         const hasDescription = typeof mount.description == 'string' && mount.description.trim() != '';
-        const hasSource = typeof mount.source == 'string' && mount.source.trim() != '';
-        const hasFaction = typeof mount.faction == 'string' && mount.faction.trim() != '';
-        const hasMedia = typeof mount.media == 'string' && mount.media.trim() != '';
+        const hasSource = !isNaN(mount.source);
+        const hasFaction = !isNaN(mount.faction);
+        const hasMedia = !isNaN(mount.media);
         const hasPlayer = !isNaN(mount.player);
         return hasName && hasDescription && hasSource && hasFaction && hasMedia && hasPlayer;
     },
@@ -40,11 +64,11 @@ module.exports = {
         const hasUsername = typeof player.username == 'string' && player.username.trim() != '';
         const hasIsConnected = !isNaN(player.isConnected);
         const hasLevel = !isNaN(player.level);
-        const hasIcon = typeof player.icon == 'string' && player.icon.trim() != '';
+        const hasMedia = !isNaN(player.media);
         const hasClass = !isNaN(player.class);
         const hasRace = !isNaN(player.race);
         const hasProfession = !isNaN(player.profession);
-        return hasUsername && hasIsConnected && hasLevel && hasIcon && hasClass && hasRace && hasProfession;
+        return hasUsername && hasIsConnected && hasLevel && hasMedia && hasClass && hasRace && hasProfession;
     },
     validPlayerItem(playerItem){
         const hasItem = !isNaN(playerItem.item);
@@ -55,13 +79,13 @@ module.exports = {
     validProfession(profession){
         const hasName = typeof profession.name == 'string' && profession.name.trim() != '';
         const hasDescription = typeof profession.description == 'string' && profession.description.trim() != '';
-        const hasType = typeof profession.type == 'string' && profession.type.trim() != '';
-        const hasMedia = typeof profession.media == 'string' && profession.media.trim() != '';
+        const hasType = !isNaN(profession.type);
+        const hasMedia = !isNaN(profession.media);
         return hasName && hasDescription && hasType && hasMedia;
     },
     validRace(race){
         const hasName = typeof race.name == 'string' && race.name.trim() != '';
-        const hasFaction = typeof race.faction == 'string' && race.faction.trim() != '';
+        const hasFaction = !isNaN(race.faction);
         return hasName && hasFaction;
     }
 }

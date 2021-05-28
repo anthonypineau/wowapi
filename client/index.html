@@ -5,25 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./src/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>WoW - API</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a class="active" onClick="onClickLink('players', true)">Home</a></li>
-                <li><a onclick="onClickLink('classes', true)">Classes</a></li>
-                <li><a onclick="onClickLink('itemClasses', false)">Item classes</a></li>
-                <li><a onclick="onClickLink('items', true)">Items</a></li>
-                <li><a onclick="onClickLink('mounts', true)">Mounts</a></li>
-                <li><a onclick="onClickLink('professions', true)">Professions</a></li>
-                <li><a onclick="onClickLink('races', false)">Races</a></li>
-                <li><a onclick="onClickStatistics()">Statistics/Reports</a></li>
-                <li><a onclick="onClickAbout()">About</a></li>
-                <li style="float:right"><a onclick="onClickAdministration()" id="buttonAdministration">Administration</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="nav" id="nav">
+        <a class="active" onclick="onClickLink('players', 'player', true)">Home</a>
+        <a onclick="onClickLink('classes', 'class', true)">Classes</a>
+        <a onclick="onClickLink('itemClasses', 'item class', false)">Item classes</a>
+        <a onclick="onClickLink('items', 'item', true)">Items</a>
+        <a onclick="onClickLink('mounts', 'mount', true)">Mounts</a>
+        <a onclick="onClickLink('professions', 'profession', true)">Professions</a>
+        <a onclick="onClickLink('races', 'race', false)">Races</a>
+        <a onclick="onClickStatistics()">Statistics/Reports</a>
+        <a onclick="onClickAbout()">About</a>
+        <a style="float:right" onclick="onClickAdministration()" id="buttonAdministration">Administration</a>
+        <a href="javascript:void(0);" class="icon" onclick="responsiveNav()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
     <div id="app">
         
     </div>

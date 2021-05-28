@@ -11,38 +11,55 @@
   min-height: calc(100vh - 50px - 40px);
 }
 
-header{
-  height: 50px;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.nav {
   background-color: #f1f1f1;
-  font-size: 20px;
+  overflow: hidden;
 }
 
-li {
+.nav a {
   float: left;
-}
-
-li a {
   display: block;
   color: #000;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-size: 17px;
 }
 
-li a.active {
-  background-color: #4CAF50;
-}
-
-li a:hover:not(.active) {
+.nav a:hover {
   background-color: #555;
   color: white;
+}
+
+.nav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.nav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .nav a:not(:first-child) {display: none;}
+  .nav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .nav.responsive {position: relative;}
+  .nav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .nav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
 }
 
 .grid-container {
@@ -163,16 +180,22 @@ footer{
   }
 }
 
+
 #administration{
   max-width: 700px;
   margin: 0 auto;
 }
-
 #administration form{
   position:absolute;
-  top:50%;
-  transform: translateY(-50%);
+  top:30%;
   border: 3px solid #f1f1f1;
+}
+@media(min-width: 1200px){
+  #administration form{
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+  }
 }
 
 #form{
