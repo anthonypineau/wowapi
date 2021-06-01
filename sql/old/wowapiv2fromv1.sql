@@ -87,10 +87,12 @@ ENGINE=INNODB;
 create table Classes
 (id int not null auto_increment,
 name varchar(45) not null,
-powerType varchar(45) not null,
+powerType int not null,
 media int not null,
 constraint pk_Classes primary key(id),
 constraint fk1_Classes foreign key(media) references Medias(id) 
+ON DELETE CASCADE ON UPDATE CASCADE,
+constraint fk2_Classes foreign key(powerType) references PowerTypes(id) 
 ON DELETE CASCADE ON UPDATE CASCADE)
 ENGINE=INNODB;
 

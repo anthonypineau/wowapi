@@ -6,19 +6,11 @@ const buttonAdmin = document.getElementById("buttonAdministration");
 fetch("./src/views/default.html").then(response => response.text()).then(data => divApp.innerHTML = data);
 
 /* data */
-/*
-const dataSelectPowerType= [ { "value":"Energy", "text":"Energy" }, {"value":"Fury", "text":"Fury"},
-    {"value":"Focus", "text":"Focus"}, {"value":"Mana", "text":"Mana"}, {"value":"Rage", "text":"Rage"},
-    {"value":"Runic Power", "text":"Runic Power"} ];
-const dataSelectQuality = [ { "value": "Poor", "text": "Poor" },  { "value": "Common", "text": "Common" },
-        { "value": "Uncommon", "text": "Uncommon" }, { "value": "Rare", "text": "Rare" }, { "value": "Epic", "text": "Epic" } ];
-const dataSelectTrueFalse = [ { "value":"1", "text":"True" }, {"value":"0", "text":"False"}];
-const dataSelectSource = [ { "value": "Achievement", "text": "Achievement" }, { "value": "Drop", "text": "Drop" },
-        { "value": "Profession", "text": "Profession" }, { "value": "Quest", "text": "Quest" }, { "value": "Vendor", "text": "Vendor" } ];
-const dataSelectFaction = [ { "value": "Alliance", "text": "Alliance" }, { "value": "Horde", "text": "Horde" } ];
-const dataSelectType = [ { "value":"Primary", "text":"Primary" }, {"value":"Secondary", "text":"Secondary"}];
-*/
-
+let dataSelectPowerType;
+let dataSelectQuality;
+let dataSelectSource;
+let dataSelectFaction;
+let dataSelectType;
 const dataSelectTrueFalse = [ { "id":"1", "name":"True" }, {"id":"0", "name":"False"}];
 /* end data */
 
@@ -44,12 +36,6 @@ function responsiveNav() {
     }
 }
 
-let dataSelectPowerType;
-let dataSelectQuality;
-let dataSelectSource;
-let dataSelectFaction;
-let dataSelectType;
-
 window.onload = async function() { 
     if(localStorage.getItem("token")==null){
         localStorage.setItem("token", "token");
@@ -63,61 +49,53 @@ window.onload = async function() {
 }
 
 function onClickLink(link, text, hasAnImage){
+    if((document.getElementById("nav").className === "nav" && window.outerWidth<1200) || (document.getElementById("nav").className === "nav responsive" && window.outerWidth<1200) ){
+        responsiveNav();
+    }
+    const divContent = document.createElement("div");
     const LINK_API_URL = API_URL + link;
     fetch(LINK_API_URL)
     .then(response => response.json())
     .then(data => {
         const divGridContainer = document.createElement("div");
         divGridContainer.classList.add("grid-container");
+        let i=1;
         data.forEach(async element => {
             const divGridItem = document.createElement("div");
             divGridItem.classList.add("grid-item");
-            const divFlipCard = document.createElement("div");
-            divFlipCard.classList.add("flip-card");
-            const divFlipCardInner = document.createElement("div");
-            divFlipCardInner.classList.add("flip-card-inner");
-            const divFlipCardFront = document.createElement("div");
-            divFlipCardFront.classList.add("flip-card-front");
+            const divCard = document.createElement("div");
+            divCard.classList.add("card");
+            const img = document.createElement("img")
             if(hasAnImage){
-                const imgFlipCardFront = document.createElement("img");
-                const media = await fetch("http://localhost:3000/medias/"+element.media).then(response => response.json()).then(data => data[0].link)
-                imgFlipCardFront.src = media;
-                divFlipCardFront.appendChild(imgFlipCardFront);
+                const media = await fetch("http://localhost:3000/medias/"+element.media).then(response => response.json()).then(data => data[0].link);
+                img.src = media;    
             }else{
-                const noImgFlipCardFront = document.createElement("p");
-                noImgFlipCardFront.textContent = element.name;
-                
-                divFlipCardFront.appendChild(noImgFlipCardFront);
+                const media = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP._fIUo2J3UC-_8HDjyqe_zAHaHa%26pid%3DApi&f=1";
+                img.src = media;
             }
-
-            const divFlipCardBack = document.createElement("div");
-            divFlipCardBack.classList.add("flip-card-back");
-
-            const divFlipCardBackContent = document.createElement("p");
-            divFlipCardBackContent.textContent = element.name;
-            
-            divFlipCardBack.appendChild(divFlipCardBackContent);
-
-            divFlipCardInner.appendChild(divFlipCardFront);
-            divFlipCardInner.appendChild(divFlipCardBack);
-            divFlipCard.appendChild(divFlipCardInner);
-
-            divGridItem.appendChild(divFlipCard);
-            
+            img.alt="Media";
+            divCard.appendChild(img);
+            const divContainer = document.createElement("div");
+            divContainer.classList.add("container");
+            const h4 = document.createElement("h4");
+            h4.innerText = element.name;
+            divContainer.appendChild(h4);
+            divCard.appendChild(divContainer);
+            divGridItem.appendChild(divCard);
             if(localStorage.getItem("token")!="token"){
                 const divGridItemContainer = document.createElement("div");
-
                 const buttonEdit = document.createElement("button");
                 buttonEdit.innerText = "Edit";
                 buttonEdit.addEventListener("click", ()=>{
                     window["onClickAddEdit"](link, text, element.id);
                 });
-
                 divGridItemContainer.appendChild(buttonEdit);
-    
                 const buttonDelete = document.createElement("button");
                 buttonDelete.innerText = "Delete";
                 buttonDelete.addEventListener("click", () => {
+
+
+
                     fetch(API_URL+link+"/"+element.id, {
                         method: 'DELETE',
                     });
@@ -132,8 +110,53 @@ function onClickLink(link, text, hasAnImage){
             }
 
             divGridContainer.appendChild(divGridItem);
+            
+
+            const divModal = document.createElement("div");
+            divModal.classList.add("modal");
+            const idName = "id"+i.toString();
+            divModal.id = idName;
+
+            divGridItem.addEventListener("click", () => {
+                document.getElementById(idName).style.display='block';
+            });
+
+            const spanClose = document.createElement("span");
+            spanClose.classList.add("close");
+            spanClose.title = "Close Modal";
+            spanClose.innerHTML="&times";
+            spanClose.addEventListener("click", () => {
+                document.getElementById(idName).style.display='none';
+            })
+            i=i+1;
+
+            divModal.appendChild(spanClose);
+
+
+            const divModalContent = document.createElement("div");
+            divModalContent.classList.add("modal-content");
+            divModalContent.classList.add("animate");
+
+            const nameFunction = "display"+link;
+            window[nameFunction](divModalContent, element);          
+
+            divModal.appendChild(divModalContent);
+
+            divContent.appendChild(divModal);
+
         });
-        const divContent = document.createElement("div");
+        
+
+        window.addEventListener("click", (event) => {
+            for(j=1;j<=i;j++){
+                const idName="id"+j;
+                const divModal = document.getElementById(idName);
+                if(event.target == divModal){
+                    divModal.style.display='none';
+                }
+            }
+            
+        });
 
         if(localStorage.getItem("token")!="token"){
             const buttonAdd = document.createElement("button");
@@ -146,11 +169,140 @@ function onClickLink(link, text, hasAnImage){
             div.appendChild(buttonAdd)
             divContent.appendChild(div);
         }
+        
 
         divContent.appendChild(divGridContainer);
-        divApp.removeChild(divApp.children[0]);
+        divApp.removeChild(divApp.children[0]);       
         divApp.appendChild(divContent);
     });
+}
+
+function deleteForm(){
+    const divModal = document.createElement("div");
+    divModal.classList.add("modal");
+    const idName = "id"+i.toString();
+    divModal.id = idName;
+
+    divGridItem.addEventListener("click", () => {
+        document.getElementById(idName).style.display='block';
+    });
+
+    const spanClose = document.createElement("span");
+    spanClose.classList.add("close");
+    spanClose.title = "Close Modal";
+    spanClose.innerHTML="&times";
+    spanClose.addEventListener("click", () => {
+        document.getElementById(idName).style.display='none';
+    })
+    i=i+1;
+
+    divModal.appendChild(spanClose);
+
+
+    const divModalContent = document.createElement("div");
+    divModalContent.classList.add("modal-content");
+    divModalContent.classList.add("animate");
+
+    const nameFunction = "display"+link;
+    window[nameFunction](divModalContent, element);          
+
+    divModal.appendChild(divModalContent);
+
+    divContent.appendChild(divModal);
+}
+
+async function displayclasses(divModalContent, data){
+    displayTitle(divModalContent, "Class");
+    await displayMedia(divModalContent, data.media);
+    displayData(divModalContent, "Name", data.name);
+    const powerType = await fetch("http://localhost:3000/powerTypes/"+data.powerType).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Power type", powerType);
+}
+async function displayitems(divModalContent, data){
+    displayTitle(divModalContent, "Item");
+    await displayMedia(divModalContent, data.media);
+    displayData(divModalContent, "Name", data.name);
+    const quality = await fetch("http://localhost:3000/qualities/"+data.quality).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Quality", quality);
+    displayData(divModalContent, "Level", data.level);
+    displayData(divModalContent, "Required level", data.requiredLevel);
+    displayData(divModalContent, "Purchase price", data.purchasePrice);
+    displayData(divModalContent, "Sell price", data.sellPrice);
+    displayData(divModalContent, "Equippable", data.isEquippable==1 ? "True" : "False");
+    displayData(divModalContent, "Stackable", data.isStackable==1 ? "True" : "False");
+    const itemClass = await fetch("http://localhost:3000/itemClasses/"+data.itemClass).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Item class", itemClass);
+}
+async function displayitemClasses(divModalContent, data){
+    displayTitle(divModalContent, "Item class");
+    displayImg(divModalContent);
+    displayData(divModalContent, "Name", data.name);
+}
+async function displaymounts(divModalContent, data){
+    displayTitle(divModalContent, "Mount");
+    await displayMedia(divModalContent, data.media);
+    displayData(divModalContent, "Name", data.name);
+    displayData(divModalContent, "Description", data.description);
+    const source = await fetch("http://localhost:3000/sources/"+data.source).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Source", source);
+    const faction = await fetch("http://localhost:3000/factions/"+data.faction).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Faction", faction);
+    const player = await fetch("http://localhost:3000/players/"+data.player).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Owned by", player);
+}
+async function displayplayers(divModalContent, data){
+    displayTitle(divModalContent, "Player");
+    await displayMedia(divModalContent, data.media);
+    displayData(divModalContent, "Name", data.name);
+    displayData(divModalContent, "Connected", data.isConnected==1 ? "True" : "False");
+    displayData(divModalContent, "Level", data.level);
+    const classe = await fetch("http://localhost:3000/classes/"+data.class).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Class", classe);
+    const race = await fetch("http://localhost:3000/races/"+data.race).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Race", race);
+    const profession = await fetch("http://localhost:3000/professions/"+data.profession).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Profession", profession);
+}
+async function displayplayersitems(divModalContent, data){
+    displayTitle(divModalContent, "Player items");
+    //displayData(divModalContent, "Name", data.name);
+}
+async function displayprofessions(divModalContent, data){
+    displayTitle(divModalContent, "Profession");
+    await displayMedia(divModalContent, data.media);
+    displayData(divModalContent, "Name", data.name);
+    displayData(divModalContent, "Description", data.description);
+    const type = await fetch("http://localhost:3000/types/"+data.type).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Type", type);
+}
+async function displayraces(divModalContent, data){
+    displayTitle(divModalContent, "Race");
+    displayImg(divModalContent);
+    displayData(divModalContent, "Name", data.name);
+    const faction = await fetch("http://localhost:3000/factions/"+data.faction).then(response => response.json()).then(data => data[0].name);
+    displayData(divModalContent, "Faction", faction);
+}
+function displayTitle(divModalContent, value){
+    const h1 = document.createElement("h1");
+    h1.innerText=value;
+    divModalContent.appendChild(h1);
+}
+async function displayMedia(divModalContent, media){
+    const mediaLink = await fetch("http://localhost:3000/medias/"+media).then(response => response.json()).then(data => data[0].link)
+    const img = document.createElement("img");
+    img.src = mediaLink;
+    img.alt = "Media";
+    divModalContent.appendChild(img);
+}
+function displayImg(divModalContent){
+    const img = document.createElement("img");
+    img.src = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP._fIUo2J3UC-_8HDjyqe_zAHaHa%26pid%3DApi&f=1";
+    divModalContent.appendChild(img);
+}
+function displayData(divModalContent, name, value){
+    const p = document.createElement("p");
+    p.innerText = name + " : " + value;
+    divModalContent.appendChild(p);
 }
 
 function onClickAdministration(){
@@ -307,14 +459,10 @@ function onClickAddEdit(link, text, id=null){
     const form = document.createElement("form");
     const divContainer = document.createElement("div");
     divContainer.classList.add("container");
-    
     const functionName = "onClickAdd"+link;
-
     window[functionName](form, divContainer, id);
-
     app(divApp, divContent, form, text);
 }
-
 function onClickAddclasses(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
@@ -338,7 +486,6 @@ function onClickAddclasses(form, divContainer, id=null){
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     addButtonAdd(form, divContainer, buttonAdd, "classes", id, objects);
 }
-
 function onClickAdditems(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
@@ -390,8 +537,7 @@ function onClickAdditems(form, divContainer, id=null){
     componentLabelSelectFromApi(form, divContainer, labelItemClass, selectItemClass, "Item class", "itemClass", "http://localhost:3000/itemClasses");
     addButtonAdd(form, divContainer, buttonAdd, "items", id, objects);
 }
-
-function onClickAdditemclasses(form, divContainer, id=null){
+function onClickAdditemClasses(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
     const buttonAdd = document.createElement("button");
@@ -406,7 +552,6 @@ function onClickAdditemclasses(form, divContainer, id=null){
     componentLabelInput(form, divContainer, labelName, inputName, "Name", "name", "text");
     addButtonAdd(form, divContainer, buttonAdd, "itemClasses", id, objects);
 }
-
 function onClickAddmounts(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
@@ -451,7 +596,6 @@ function onClickAddmounts(form, divContainer, id=null){
     componentLabelSelectFromApi(form, divContainer, labelPlayer, selectPlayer, "Player", "player", "http://localhost:3000/players");
     addButtonAdd(form, divContainer, buttonAdd, "mounts", id, objects);
 }
-
 function onClickAddplayers(form, divContainer, id=null){
     const labelUsername = document.createElement("label");
     const inputUsername = document.createElement("input");
@@ -491,7 +635,6 @@ function onClickAddplayers(form, divContainer, id=null){
     componentLabelSelectFromApi(form, divContainer, labelProfession, selectProfession, "Profession", "profession", "http://localhost:3000/professions");
     addButtonAdd(form, divContainer, buttonAdd, "players", id, objects);
 }
-
 function onClickAddplayersitems(form, divContainer, id=null){
     const labelItem = document.createElement("label");
     const selectItem = document.createElement("select");
@@ -505,7 +648,6 @@ function onClickAddplayersitems(form, divContainer, id=null){
     componentLabelInput(form, divContainer, labelNumberInInventory, inputNumberInInventory, "Number in inventory", "numberInInventory", "number");
     addButtonAdd(form, divContainer, buttonAdd, "playersItems", id, objects);
 }
-
 function onClickAddprofessions(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
@@ -513,19 +655,16 @@ function onClickAddprofessions(form, divContainer, id=null){
     const textareaDescription = document.createElement("textarea");
     const labelType = document.createElement("label");
     const selectType = document.createElement("select");
-    const labelFaction = document.createElement("label");
-    const selectFaction = document.createElement("select");
     const labelMedia = document.createElement("label");
     const inputMedia = document.createElement("input");
     const buttonAdd = document.createElement("button");
-    const objects = [ inputName, textareaDescription, selectType, selectFaction, inputMedia ];
+    const objects = [ inputName, textareaDescription, selectType, inputMedia ];
 
     if(id!=null){
         fetch("http://localhost:3000/professions/"+id).then(response => response.json()).then(data => {
             inputName.value = data[0].name;
             textareaDescription.value = data[0].description;
             selectType.value = data[0].type;
-            selectFaction.value = data[0].faction;
             inputMedia.value = data[0].media;
         });
     }
@@ -541,11 +680,9 @@ function onClickAddprofessions(form, divContainer, id=null){
     form.appendChild(divContainer);
 
     componentLabelSelect(form, divContainer, labelType, selectType, "Type", "type", dataSelectType);
-    componentLabelSelect(form, divContainer, labelFaction, selectFaction, "Faction", "faction", dataSelectFaction);
     componentLabelInput(form, divContainer, labelMedia, inputMedia, "Media", "media", "text");
     addButtonAdd(form, divContainer, buttonAdd, "professions", id, objects);
 }
-
 function onClickAddraces(form, divContainer, id=null){
     const labelName = document.createElement("label");
     const inputName = document.createElement("input");
